@@ -1,28 +1,17 @@
-import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	Container,
-	Divider,
-	TextField,
-	Typography,
-	FormControl
-} from '@mui/material';
-import GridOnIcon from '@mui/icons-material/GridOn';
-import { Link } from 'react-router-dom';
+import { Box, Button, TextField, Typography } from '@mui/material';
+
 import { FormEvent, useEffect, useState } from 'react';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 
 import usePageTitle from '../hooks/usePageTitle';
-import { useLoggedInUser } from '../hooks/useLoggedInUser';
+
 import { Recipe, recipesCollection } from '../utils/firebase';
 import ReviewRecipe from '../components/ReviewRecipe';
 import SearchIcon from '@mui/icons-material/Search';
-import SouthWestIcon from '@mui/icons-material/SouthWest';
-import SouthEastIcon from '@mui/icons-material/SouthEast';
+
 import { useNavigate } from 'react-router-dom';
 import { arrayOfCategories } from '../utils/helpers';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Home = () => {
 	usePageTitle('Home');
@@ -31,7 +20,6 @@ const Home = () => {
 	const [searchText, setSearchText] = useState('');
 
 	const navigate = useNavigate();
-	const user = useLoggedInUser();
 
 	useEffect(
 		() =>
@@ -122,9 +110,10 @@ const Home = () => {
 				}}
 			>
 				{recipes?.map((r, i) => (
-					<ReviewRecipe from="home" key={i} {...r} />
+					<ReviewRecipe from="recipes" key={i} {...r} />
 				))}
 			</Box>
+			{recipes?.length === 0 ? <LoadingSpinner /> : ''}
 		</>
 	);
 };

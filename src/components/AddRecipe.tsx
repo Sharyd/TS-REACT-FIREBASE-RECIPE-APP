@@ -30,18 +30,18 @@ const AddRecipe = ({ children }: Props) => {
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [stars, setStars] = useState(1);
+	const [submitError, setSubmitError] = useState<string>();
+
 	const [title, titleProps] = useField('title');
 	const [description, descriptionProps] = useField('description');
-	const [ingredients, setIngredients] = useState('');
+	const [ingredients, ingredientsProps] = useField('ingredients');
 	const [category, setCategory] = useState('');
+
 	const [ingredientsArray, setIngredientsArray] = useState<Ing>([]);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-	const [submitError, setSubmitError] = useState<string>();
 
 	const closeDialog = () => {
 		setOpen(false);
-		setStars(0);
 		descriptionProps.onChange({ target: { value: '' } } as never);
 		setSubmitError(undefined);
 	};
@@ -52,9 +52,9 @@ const AddRecipe = ({ children }: Props) => {
 			...prev,
 			{ ing: ingredients, id: Date.now().toString() }
 		]);
-		setIngredients('');
+		ingredientsProps.onChange({ target: { value: '' } } as never);
 	};
-	const deleteIng = (id: string) => {
+	const deleteIngredients = (id: string) => {
 		setIngredientsArray(prev => prev.filter(ing => ing.id !== id));
 	};
 
@@ -67,7 +67,8 @@ const AddRecipe = ({ children }: Props) => {
 			type === 'image/jpg' ||
 			type === 'image/jpeg' ||
 			type === 'image/webp' ||
-			type === 'image/svg'
+			type === 'image/svg' ||
+			type === 'image/avif'
 		) {
 			setSelectedFile(file);
 		} else {
@@ -96,8 +97,6 @@ const AddRecipe = ({ children }: Props) => {
 				title: title.toLowerCase(),
 				description,
 				ingredients: ingredientsArray,
-				steps: [],
-				stars,
 				image: '',
 				category: category.toLowerCase(),
 				by: user.email,
@@ -131,7 +130,7 @@ const AddRecipe = ({ children }: Props) => {
 			);
 		}
 		setLoading(false);
-		setIngredients('');
+		ingredientsProps.onChange({ target: { value: '' } } as never);
 		setIngredientsArray([]);
 		descriptionProps.onChange({ target: { value: '' } } as never);
 		titleProps.onChange({ target: { value: '' } } as never);
@@ -181,8 +180,7 @@ const AddRecipe = ({ children }: Props) => {
 					>
 						<TextField
 							label="Ingredients"
-							value={ingredients}
-							onChange={e => setIngredients(e.target.value)}
+							{...ingredientsProps}
 							sx={{
 								width: '100%'
 							}}
@@ -229,7 +227,9 @@ const AddRecipe = ({ children }: Props) => {
 										>
 											<ListItem disableGutters>{ing.ing}</ListItem>
 											<Button>
-												<HighlightOffIcon onClick={() => deleteIng(ing.id)} />
+												<HighlightOffIcon
+													onClick={() => deleteIngredients(ing.id)}
+												/>
 											</Button>
 										</Container>
 									)

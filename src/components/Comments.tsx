@@ -10,15 +10,13 @@ import {
 } from '../utils/firebase';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useLoggedInUser } from '../hooks/useLoggedInUser';
-import { deleteDoc, doc, onSnapshot, query, setDoc } from 'firebase/firestore';
+import { deleteDoc, onSnapshot, query, setDoc } from 'firebase/firestore';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 const Comments: FC<CommentsRecipe> = ({
 	comment,
 	commentId,
 	email,
-	recipeId,
-	timestamp,
 	userId
 }) => {
 	const user = useLoggedInUser();
@@ -46,7 +44,7 @@ const Comments: FC<CommentsRecipe> = ({
 			});
 		}
 	};
-	console.log(liked);
+
 	return (
 		<Box
 			sx={{

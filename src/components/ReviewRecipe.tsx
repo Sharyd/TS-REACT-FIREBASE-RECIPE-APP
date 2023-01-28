@@ -1,34 +1,18 @@
-import { Anchor, Star, StarBorder } from '@mui/icons-material';
+import { Star, StarBorder } from '@mui/icons-material';
 import {
 	Box,
 	Button,
 	Card,
 	CardActions,
 	CardContent,
-	makeStyles,
 	Tooltip,
 	Typography
 } from '@mui/material';
-import {
-	addDoc,
-	collection,
-	deleteDoc,
-	doc,
-	DocumentData,
-	onSnapshot,
-	orderBy,
-	Query,
-	query,
-	QueryDocumentSnapshot,
-	setDoc,
-	updateDoc,
-	WithFieldValue
-} from 'firebase/firestore';
+import { deleteDoc, onSnapshot, query, setDoc } from 'firebase/firestore';
 import { FC, PropsWithChildren } from 'react';
 
 import { useLoggedInUser } from '../hooks/useLoggedInUser';
 import {
-	db,
 	Recipe,
 	recipeReviewCollection,
 	recipeReviewDocument,
@@ -43,17 +27,7 @@ type Props = PropsWithChildren<{
 	from: string;
 }>;
 
-const ReviewRecipe: FC<Recipe & Props> = ({
-	from,
-	id,
-	title,
-	description,
-	ingredients,
-	steps,
-	stars,
-	image,
-	by
-}) => {
+const ReviewRecipe: FC<Recipe & Props> = ({ from, id, title, image }) => {
 	const user = useLoggedInUser();
 
 	const [reviewStarsFromFirebase, setReviewStarsFromFirebase] = useState<
@@ -101,6 +75,7 @@ const ReviewRecipe: FC<Recipe & Props> = ({
 
 	useEffect(() => {
 		if (!id) return;
+
 		onSnapshot(query(recipeReviewCollection(id ?? '')), snapshot => {
 			setReviews(snapshot.docs.map(doc => doc?.data()));
 		});
@@ -158,18 +133,17 @@ const ReviewRecipe: FC<Recipe & Props> = ({
 							.join('\n')} ${reviews?.length === 10 ? '...' : ''}
 							${reviews.length === 0 ? 'No reviews' : ''}`}
 					>
-						<Box
-							component="span"
+						<Typography
+							color="primary"
 							sx={{
 								textDecoration: 'underline',
 								ml: 0.5,
-								color: '#f2d45c',
 								fontSize: '1.15rem',
 								position: 'relative'
 							}}
 						>
 							{reviews?.length}
-						</Box>
+						</Typography>
 					</Tooltip>
 				</Box>
 				<Box
@@ -186,7 +160,7 @@ const ReviewRecipe: FC<Recipe & Props> = ({
 					Show more
 				</Button>
 			</CardContent>
-			{from === 'recipe' && (
+			{from === 'myRecipes' && (
 				<CardActions sx={{ pb: 2 }}>
 					<Button
 						variant="contained"

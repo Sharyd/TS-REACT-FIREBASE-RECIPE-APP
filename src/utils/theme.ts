@@ -37,8 +37,8 @@ export const themeLight = createTheme({
 		background: {
 			default: 'rgba(0, 0, 0, 0.08)'
 		},
-		primary: { main: '#f2d45c' },
-		secondary: { main: 'rgba(0, 0, 0, 0.87)' },
+		primary: { main: '#ca8a04' },
+		secondary: { main: 'rgba(0, 0, 0, 0.85)' },
 		playerX: '#f25a5a',
 		playerO: '#5a8cf2',
 		mode: 'light'

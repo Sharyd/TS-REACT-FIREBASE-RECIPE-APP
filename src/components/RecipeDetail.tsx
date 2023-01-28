@@ -28,15 +28,11 @@ enum type {
 }
 
 const RecipeDetail = ({
-	// from,
 	id,
 	title,
 	description,
 	ingredients,
-	steps,
-	stars,
-	image,
-	by
+	image
 }: Recipe) => {
 	const [active, setActive] = useState(type.DESCRIPTION);
 	const [commentText, setCommentText] = useState('');
@@ -87,9 +83,8 @@ const RecipeDetail = ({
 			<Box
 				sx={{
 					display: 'flex',
-					// alignItems: 'center',
-					justifyContent: 'start',
-
+					alignItems: 'center',
+					justifyContent: 'center',
 					flexDirection: { xs: 'column', md: 'row' },
 					gap: { xs: 4, md: 12 }
 				}}
@@ -124,7 +119,7 @@ const RecipeDetail = ({
 						alignItems: 'center',
 						flexDirection: 'column',
 						width: { xs: '100%', md: '270px' },
-						maxHeight: { xs: '150px', md: '250px' },
+						maxHeight: { xs: '180px', md: '450px' },
 						gap: 2
 					}}
 				>
@@ -157,7 +152,7 @@ const RecipeDetail = ({
 								'width': '100%',
 
 								'borderRadius': '10px',
-								'height': { xs: '175px', md: '200px' },
+								'height': { xs: '120px', md: '450px' },
 								'overflowY': 'scroll',
 								'scrollbarWidth': 'none',
 								'&::-webkit-scrollbar': {
@@ -174,7 +169,7 @@ const RecipeDetail = ({
 						<Box
 							sx={{
 								'width': '100%',
-								'height': { xs: '200px', md: '400px' },
+								'height': { xs: '120px', md: '450px' },
 								'borderRadius': '10px',
 								'overflowY': 'scroll',
 								'scrollbarWidth': 'none',

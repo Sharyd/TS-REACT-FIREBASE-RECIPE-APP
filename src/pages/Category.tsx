@@ -1,45 +1,21 @@
-import { getDocs, onSnapshot, query, where } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { Recipe, recipesCollection } from '../utils/firebase';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/system';
 import ReviewRecipe from '../components/ReviewRecipe';
 import { Typography } from '@mui/material';
 import { capitalizeFirstLetters } from '../utils/helpers';
 import LoadingSpinner from '../components/LoadingSpinner';
+import useWhereSnapshot from '../hooks/useWhereSnapshot';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Category = () => {
-	const [searchByCategory, setSearchByCategory] = useState<Recipe[]>([]);
-	const [searchByTitle, setSearchByTitle] = useState<Recipe[]>([]);
-	const [loading, setLoading] = useState(false);
+	usePageTitle('Category');
+
 	const { searchText } = useParams();
 
-	useEffect(() => {
-		const unsubscribe = onSnapshot(
-			query(recipesCollection, where('category', '==', searchText)),
+	const { value: searchByCategory } = useWhereSnapshot('category', searchText);
+	const { value: searchByTitle } = useWhereSnapshot('title', searchText);
 
-			snapshot => {
-				setSearchByCategory(snapshot.docs.map(doc => doc.data()));
-			}
-		);
-		return () => {
-			unsubscribe();
-		};
-	}, [searchText]);
-
-	useEffect(() => {
-		const unsubscribe = onSnapshot(
-			query(recipesCollection, where('title', '==', searchText)),
-
-			snapshot => {
-				setSearchByTitle(snapshot.docs.map(doc => doc.data()));
-			}
-		);
-		return () => {
-			unsubscribe();
-		};
-	}, [searchText]);
-
+	if (searchByCategory?.length === 0) return <LoadingSpinner />;
 	return (
 		<>
 			{searchByCategory.length !== 0 || searchByTitle.length !== 0 ? (

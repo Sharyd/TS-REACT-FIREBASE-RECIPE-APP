@@ -11,6 +11,7 @@ import { User } from 'firebase/auth';
 import { onAuthChanged } from '../utils/firebase';
 
 type ContextState = { user: User | null };
+
 const UserContext = createContext<ContextState | undefined>(undefined);
 
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -18,7 +19,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 	const userValue = { user };
 
 	useEffect(() => {
-		onAuthChanged(u => setUser(u ?? null));
+		onAuthChanged(user => setUser(user ?? null));
 	}, []);
 
 	return (

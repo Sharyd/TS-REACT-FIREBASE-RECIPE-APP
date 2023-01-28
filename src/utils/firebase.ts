@@ -51,9 +51,8 @@ export type Recipe = {
 	title: string;
 	description?: string;
 	ingredients?: Ing;
-	steps?: [];
-	stars: number;
-	image: string;
+	image?: string;
+	stars?: number;
 	category: string;
 	by: string;
 	timestamp: Timestamp;
@@ -82,6 +81,7 @@ export const recipesCollection = collection(
 	db,
 	'recipes'
 ) as CollectionReference<Recipe>;
+
 export const recipeReviewCollection = (id: string) =>
 	collection(db, 'recipes', id, 'review') as CollectionReference<ReviewRecipe>;
 
@@ -89,11 +89,13 @@ export const commentsCollection = collection(
 	db,
 	'comments'
 ) as CollectionReference<CommentsRecipe>;
+
 export const commentsLikesCollection = (id: string) =>
 	collection(db, 'comments', id, 'likes') as CollectionReference<CommentsLike>;
 
 export const recipeReviewDocument = (id: string, userId: string) =>
 	doc(db, 'recipes', id, 'review', userId) as DocumentReference<ReviewRecipe>;
+
 export const recipesDocument = (id: string) =>
 	doc(db, 'recipes', id) as DocumentReference<Recipe>;
 
@@ -105,5 +107,6 @@ export const commentsLikesDocument = (commentId: string, userId: string) =>
 		'likes',
 		userId
 	) as DocumentReference<CommentsLike>;
+
 export const commentDocument = (id: string) =>
 	doc(db, 'comments', id) as DocumentReference<CommentsRecipe>;

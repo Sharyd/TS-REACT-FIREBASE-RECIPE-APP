@@ -1,31 +1,21 @@
-import { FC, useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
+import { orderBy } from 'firebase/firestore';
 
 import ReviewRecipe from '../components/ReviewRecipe';
 import AddRecipe from '../components/AddRecipe';
-import { recipesCollection, Recipe } from '../utils/firebase';
+
 import { useLoggedInUser } from '../hooks/useLoggedInUser';
+import usePageTitle from '../hooks/usePageTitle';
+import useWhereSnapshot from '../hooks/useWhereSnapshot';
 
-const Recipes: FC = () => {
-	const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
+const Recipes = () => {
+	usePageTitle('Recipes');
 	const user = useLoggedInUser();
-
-	useEffect(() => {
-		const unsubscribe = onSnapshot(
-			query(
-				recipesCollection,
-				where('by', '==', user?.email),
-				orderBy('timestamp', 'desc')
-			),
-			snapshot => {
-				setMyRecipes(snapshot.docs.map(doc => doc.data()));
-			}
-		);
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+	const { value: myRecipes } = useWhereSnapshot(
+		'by',
+		user?.email,
+		orderBy('timestamp', 'desc')
+	);
 
 	return (
 		<>
@@ -60,14 +50,15 @@ const Recipes: FC = () => {
 						flexDirection: { xs: 'column', lg: 'row' }
 					}}
 				>
-					{myRecipes?.map((r, i) =>
-						user?.email === r.by ? (
-							<ReviewRecipe from="recipe" key={i} {...r} />
+					{myRecipes?.map((recipe, i) =>
+						user?.email === recipe.by ? (
+							<ReviewRecipe from="myRecipes" key={i} {...recipe} />
 						) : (
 							''
 						)
 					)}
 				</Box>
+				{/* {myRecipes?.length === 0 ? <LoadingSpinner /> : ''} */}
 			</Box>
 		</>
 	);

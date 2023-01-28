@@ -7,5 +7,8 @@ Recipe app
 + Dark/Light Theme funcionality
 + Searching by category or name
 + Add/remove comments funcionality and likes,
-+ Some custom hooks(useLocalStorage, useField and so on)
++ Some custom hooks(useLocalStorage, useField etc)
 + some other features
++ Review of recipe with stars
+
+and some other features.

@@ -88,6 +88,7 @@ const AddRecipe = ({ children }: Props) => {
 			ingredientsArray.length === 0 ||
 			selectedFile === null
 		) {
+			setLoading(false);
 			setSubmitError('Fields must not be empty!');
 			return;
 		}

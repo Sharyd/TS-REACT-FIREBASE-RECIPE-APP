@@ -4,6 +4,7 @@ import ReviewRecipe from '../components/ReviewRecipe';
 import { Typography } from '@mui/material';
 import { capitalizeFirstLetters } from '../utils/helpers';
 import LoadingSpinner from '../components/LoadingSpinner';
+
 import useWhereSnapshot from '../hooks/useWhereSnapshot';
 import usePageTitle from '../hooks/usePageTitle';
 
@@ -15,7 +16,6 @@ const Category = () => {
 	const { value: searchByCategory } = useWhereSnapshot('category', searchText);
 	const { value: searchByTitle } = useWhereSnapshot('title', searchText);
 
-	if (searchByCategory?.length === 0) return <LoadingSpinner />;
 	return (
 		<>
 			{searchByCategory.length !== 0 || searchByTitle.length !== 0 ? (

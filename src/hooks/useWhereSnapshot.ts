@@ -14,7 +14,6 @@ const useWhereSnapshot = (
 	sortByNewest?: QueryConstraint
 ) => {
 	const [value, setValue] = useState<Recipe[]>([]);
-
 	useEffect(() => {
 		let unsubscribe: Unsubscribe;
 		if (!sortByNewest) {

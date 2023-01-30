@@ -35,7 +35,6 @@ const ReviewRecipe: FC<Recipe & Props> = ({ from, id, title, image }) => {
 	const [userReviewed, setUserReviewed] = useState(false);
 
 	const reviewsStars = reviews.reduce((acc, current, _, arr) => {
-		acc + current.stars;
 		return acc + current.stars / arr.length;
 	}, 0);
 

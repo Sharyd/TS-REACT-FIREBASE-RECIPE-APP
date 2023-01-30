@@ -30,21 +30,14 @@ type Props = PropsWithChildren<{
 const ReviewRecipe: FC<Recipe & Props> = ({ from, id, title, image }) => {
 	const user = useLoggedInUser();
 
-	const [reviewStarsFromFirebase, setReviewStarsFromFirebase] = useState<
-		ReviewRecipeType | undefined
-	>(undefined);
 	const [reviews, setReviews] = useState<ReviewRecipeType[]>([]);
 	const [hoverStars, setHoverStars] = useState<number>(0);
 	const [userReviewed, setUserReviewed] = useState(false);
 
-	useEffect(
-		() =>
-			setReviewStarsFromFirebase(
-				reviews?.find(reviews => reviews.email === user?.email && reviews.stars)
-			),
-
-		[reviews, user]
-	);
+	const reviewsStars = reviews.reduce((acc, current, _, arr) => {
+		acc + current.stars;
+		return acc + current.stars / arr.length;
+	}, 0);
 
 	useEffect(
 		() =>
@@ -105,7 +98,7 @@ const ReviewRecipe: FC<Recipe & Props> = ({ from, id, title, image }) => {
 					}}
 				>
 					{[...Array(5).keys()].map(i =>
-						i < ((hoverStars || reviewStarsFromFirebase?.stars) ?? '') ? (
+						i < ((hoverStars || reviewsStars) ?? '') ? (
 							<Star
 								onClick={() => {
 									user ? sendReview(i) : alert('You are not authenticated');
